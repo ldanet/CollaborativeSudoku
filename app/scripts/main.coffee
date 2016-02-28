@@ -16,22 +16,14 @@ require.config
     underscore: '../bower_components/lodash/dist/lodash'
     bootstrap: '../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap'
     socketio: '../bower_components/socket.io/lib/socket'
+    handlebars: '../bower_components/handlebars/handlebars'
 
 
-require [
-  'backbone'
-  'marionette'
+define [
+  'app'
 ], (
-  Backbone
-  Marionette
+  App
 ) ->
-
-  class App extends Marionette.Application
-    regions:
-      mainRegion: '#container'
-
-    initialize: ->
-      console.log "Initializing app."
 
   app = new App
   app.start()
