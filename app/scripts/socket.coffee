@@ -1,10 +1,18 @@
-require [
+define [
+  'marionette'
   'socketio'
 ], (
+  Marionette
   socketio
 )->
 
-  socket = socketio()
-  console.log "Created socket", socket
-  socket.on 'connection',->
-    console.log "Socket connected!"
+  class SocketManager extends Marionette.Controller
+    initialize: ->
+      @socket = socketio()
+
+      @socket.on 'connection',->
+        console.log "Socket connected!"
+
+
+    emit: (args...)->
+      @socket.emit args...

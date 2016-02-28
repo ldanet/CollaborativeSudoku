@@ -27,11 +27,11 @@ module.exports = function (grunt) {
         livereload: LIVERELOAD_PORT
       },
       coffee: {
-        files: ['<%= yeoman.app %>/scripts/{,*/}*.coffee'],
+        files: ['<%= yeoman.app %>/scripts/**/*.coffee'],
         tasks: ['coffee:dist']
       },
       sass: {
-        files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
+        files: ['<%= yeoman.app %>/styles/**/*.{scss,sass}'],
         tasks: ['sass:server']
       },
       livereload: {
@@ -40,15 +40,15 @@ module.exports = function (grunt) {
         },
         files: [
           '<%= yeoman.app %>/*.html',
-          '{.tmp,<%= yeoman.app %>}/styles/{,*/}*.css',
-          '{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js',
-          '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp}',
+          '{.tmp,<%= yeoman.app %>}/styles/**/*.css',
+          '{.tmp,<%= yeoman.app %>}/scripts/**/*.js',
+          '<%= yeoman.app %>/images/**/*.{png,jpg,jpeg,gif,webp}',
           '<%= yeoman.app %>/scripts/templates/*.{ejs,mustache,hbs}'
         ]
       },
       handlebars: {
         files: [
-          '<%= yeoman.app %>/scripts/templates/{,*/}*.hbs'
+          '<%= yeoman.app %>/scripts/templates/**/*.hbs'
         ],
         tasks: ['handlebars']
       },
@@ -92,7 +92,7 @@ module.exports = function (grunt) {
       },
       all: [
         'Gruntfile.js',
-        '<%= yeoman.app %>/scripts/{,*/}*.js',
+        '<%= yeoman.app %>/scripts/**/*.js',
         '!<%= yeoman.app %>/scripts/vendor/*'
       ]
     },
@@ -103,7 +103,7 @@ module.exports = function (grunt) {
           // require them into your main .coffee file
           expand: true,
           cwd: '<%= yeoman.app %>/scripts',
-          src: '{,*/}*.coffee',
+          src: '**/*.coffee',
           dest: '.tmp/scripts',
           ext: '.js'
         }]
@@ -179,8 +179,8 @@ module.exports = function (grunt) {
       }
     },
     usemin: {
-      html: ['<%= yeoman.dist %>/{,*/}*.html'],
-      css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
+      html: ['<%= yeoman.dist %>/**/*.html'],
+      css: ['<%= yeoman.dist %>/styles/**/*.css'],
       options: {
         dirs: ['<%= yeoman.dist %>']
       }
@@ -190,7 +190,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '<%= yeoman.app %>/images',
-          src: '{,*/}*.{png,jpg,jpeg}',
+          src: '**/*.{png,jpg,jpeg}',
           dest: '<%= yeoman.dist %>/images'
         }]
       }
@@ -199,8 +199,8 @@ module.exports = function (grunt) {
       dist: {
         files: {
           '<%= yeoman.dist %>/styles/main.css': [
-            '.tmp/styles/{,*/}*.css',
-            '<%= yeoman.app %>/styles/{,*/}*.css'
+            '.tmp/styles/**/*.css',
+            '<%= yeoman.app %>/styles/**/*.css'
           ]
         }
       }
@@ -235,8 +235,8 @@ module.exports = function (grunt) {
           dest: '<%= yeoman.dist %>',
           src: [
             '*.{ico,txt}',
-            'images/{,*/}*.{webp,gif}',
-            'styles/fonts/{,*/}*.*',
+            'images/**/*.{webp,gif}',
+            'styles/fonts/**/*.*',
             'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/*.*'
           ]
         }, {
@@ -256,8 +256,7 @@ module.exports = function (grunt) {
           amd: true,
           namespace: function(filename) {
             filename = filename.split('templates/')[1];
-            var names = filename.replace(/(.*)(\/\w+\.hbs)/, '$1');
-            names = names.split('.hbs')[0];
+            var names = filename.split('.hbs')[0];
             return 'JST.' + names.split('/').join('.');
           },
           processName: function(filepath) {
@@ -272,10 +271,10 @@ module.exports = function (grunt) {
       dist: {
         files: {
           src: [
-            '<%= yeoman.dist %>/scripts/{,*/}*.js',
-            '<%= yeoman.dist %>/styles/{,*/}*.css',
-            '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp}',
-            '<%= yeoman.dist %>/styles/fonts/{,*/}*.*',
+            '<%= yeoman.dist %>/scripts/**/*.js',
+            '<%= yeoman.dist %>/styles/**/*.css',
+            '<%= yeoman.dist %>/images/**/*.{png,jpg,jpeg,gif,webp}',
+            '<%= yeoman.dist %>/styles/fonts/**/*.*',
             'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/*.*'
           ]
         }

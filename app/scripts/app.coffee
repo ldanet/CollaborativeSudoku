@@ -1,11 +1,17 @@
 define [
+  'backbone'
   'marionette'
-  'views/home'
   'socket'
+  'router'
+  'views/home'
+  'views/game'
 ], (
+  Backbone
   Marionette
+  SocketManager
+  Router
   HomeView
-  socket
+  GameView
 )->
 
   class App extends Marionette.Application
@@ -14,9 +20,29 @@ define [
 
     initialize: ->
       console.log "Initializing app."
-      view = new HomeView
+      @socket = new SocketManager
+      @router = new Router
 
-      view.on 'game:start', ->
-        #do something
+    showHomeView: =>
+      @view = new HomeView
 
-      @mainRegion.show view
+      @view.on 'game:start', =>
+        @socket.emit 'game:new', (gameId,game)=>
+          console.log "Got new game!", gameId,game
+          Backbone.history.navigate gameId
+          @showGameView(gameId, game)
+
+      @mainRegion.show @view
+
+    showGameView: (gameId,game)=>
+      @view = new GameView
+        gameId: gameId
+        game: game
+        socket: @socket
+
+      @mainRegion.show @view
+
+    onStart: ->
+      @router.on 'route:home', @showHomeView
+      @router.on 'route:game', @showGameView
+      Backbone.history.start()

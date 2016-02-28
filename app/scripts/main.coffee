@@ -19,6 +19,8 @@ require.config
     bootstrap: '../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap'
     socketio: '../bower_components/socket.io-client/socket.io'
     handlebars: '../bower_components/handlebars/handlebars'
+    lodash: '../bower_components/lodash/dist/lodash.underscore'
+    jquery: '../bower_components/jquery/dist/jquery'
 
 
 define [
