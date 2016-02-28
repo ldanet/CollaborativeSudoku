@@ -1,10 +1,6 @@
 'use strict';
 var LIVERELOAD_PORT = 35729;
 var SERVER_PORT = 9000;
-var lrSnippet = require('connect-livereload')({port: LIVERELOAD_PORT});
-var mountFolder = function (connect, dir) {
-  return connect.static(require('path').resolve(dir));
-};
 
 module.exports = function (grunt) {
 
@@ -13,7 +9,8 @@ module.exports = function (grunt) {
 
   // Automatically load required Grunt tasks
   require('jit-grunt')(grunt, {
-    useminPrepare: 'grunt-usemin'
+    useminPrepare: 'grunt-usemin',
+    express: 'grunt-express-server'
   });
 
   // configurable paths
@@ -54,38 +51,34 @@ module.exports = function (grunt) {
           '<%= yeoman.app %>/scripts/templates/{,*/}*.hbs'
         ],
         tasks: ['handlebars']
+      },
+      express: {
+        files: [
+          'server/**/*.coffee'
+        ],
+        tasks: ['express:livereload']
       }
     },
-    connect: {
+    express: {
       options: {
         port: grunt.option('port') || SERVER_PORT,
-        // change this to '0.0.0.0' to access the server from outside
-        hostname: 'localhost'
+        opts: ['node_modules/coffee-script/bin/coffee']
       },
       livereload: {
         options: {
-          middleware: function (connect) {
-            return [
-              lrSnippet,
-              mountFolder(connect, '.tmp'),
-              mountFolder(connect, yeomanConfig.app)
-            ];
-          }
+          node_env: 'livereload',
+          script: 'server/main.coffee'
         }
       },
       dist: {
         options: {
-          middleware: function (connect) {
-            return [
-              mountFolder(connect, yeomanConfig.dist)
-            ];
-          }
+          script: 'server/main.coffee'
         }
       }
     },
     open: {
       server: {
-        path: 'http://localhost:<%= connect.options.port %>'
+        path: 'http://localhost:<%= express.options.port %>'
       }
     },
     clean: {
@@ -297,7 +290,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('serve', function (target) {
     if (target === 'dist') {
-      return grunt.task.run(['build', 'open:server', 'connect:dist:keepalive']);
+      return grunt.task.run(['build', 'open:server', 'express:dist']);
     }
 
     grunt.task.run([
@@ -305,7 +298,7 @@ module.exports = function (grunt) {
       'coffee:dist',
       'handlebars',
       'sass:server',
-      'connect:livereload',
+      'express:livereload',
       'open:server',
       'watch'
     ]);
@@ -314,7 +307,6 @@ module.exports = function (grunt) {
   grunt.registerTask('build', [
     'clean:dist',
     'coffee',
-    'createDefaultTemplate',
     'handlebars',
     'sass:dist',
     'useminPrepare',
