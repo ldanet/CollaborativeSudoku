@@ -6,6 +6,8 @@ require.config
     bootstrap:
       deps: ['jquery'],
       exports: 'jquery'
+    socketio:
+      exports: 'io'
   }
   paths:
     jquery: '../bower_components/jquery/dist/jquery'
@@ -15,7 +17,7 @@ require.config
     'backbone.wreqr': '../bower_components/backbone.wreqr/lib/backbone.wreqr'
     underscore: '../bower_components/lodash/dist/lodash'
     bootstrap: '../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap'
-    socketio: '../bower_components/socket.io/lib/socket'
+    socketio: '../bower_components/socket.io-client/socket.io'
     handlebars: '../bower_components/handlebars/handlebars'
 
 

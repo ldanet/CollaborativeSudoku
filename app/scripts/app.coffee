@@ -1,9 +1,11 @@
 define [
   'marionette'
   'views/home'
+  'socket'
 ], (
   Marionette
   HomeView
+  socket
 )->
 
   class App extends Marionette.Application

@@ -1,4 +1,6 @@
 express = require 'express'
+http = require 'http'
+Sockets = require './sockets'
 
 node_env = process.env.NODE_ENV
 
@@ -11,5 +13,7 @@ if node_env is 'livereload'
 else
   app.use express.static('dist')
 
-app.listen process.env.PORT, ->
+server = http.createServer(app).listen process.env.PORT, ->
   console.log "Server app listening on port #{process.env.PORT}, environment is #{node_env}"
+
+sockets = Sockets(server) #start socket.io
