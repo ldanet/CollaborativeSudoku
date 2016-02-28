@@ -49,11 +49,11 @@ module.exports = function (grunt) {
           '<%= yeoman.app %>/scripts/templates/*.{ejs,mustache,hbs}'
         ]
       },
-      jst: {
+      handlebars: {
         files: [
-          '<%= yeoman.app %>/scripts/templates/*.ejs'
+          '<%= yeoman.app %>/scripts/templates/{,*/}*.hbs'
         ],
-        tasks: ['jst']
+        tasks: ['handlebars']
       }
     },
     connect: {
@@ -257,14 +257,22 @@ module.exports = function (grunt) {
         rjsConfig: '<%= yeoman.app %>/scripts/main.js'
       }
     },
-    jst: {
-      options: {
-        amd: true
-      },
+    handlebars: {
       compile: {
-        files: {
-          '.tmp/scripts/templates.js': ['<%= yeoman.app %>/scripts/templates/*.ejs']
-        }
+        options: {
+          amd: true,
+          namespace: function(filename) {
+            filename = filename.split('templates/')[1];
+            var names = filename.replace(/(.*)(\/\w+\.hbs)/, '$1');
+            names = names.split('.hbs')[0];
+            return 'JST.' + names.split('/').join('.');
+          },
+          processName: function(filepath) {
+            return 'hbs'
+          }
+        },
+        src: ["<%= yeoman.app %>/scripts/templates/**/*.hbs"],
+        dest: ".tmp/scripts/templates.js"
       }
     },
     rev: {
@@ -282,10 +290,6 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.registerTask('createDefaultTemplate', function () {
-    grunt.file.write('.tmp/scripts/templates.js', 'this.JST = this.JST || {};');
-  });
-
   grunt.registerTask('server', function (target) {
     grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
     grunt.task.run(['serve' + (target ? ':' + target : '')]);
@@ -299,8 +303,7 @@ module.exports = function (grunt) {
     grunt.task.run([
       'clean:server',
       'coffee:dist',
-      'createDefaultTemplate',
-      'jst',
+      'handlebars',
       'sass:server',
       'connect:livereload',
       'open:server',
@@ -312,7 +315,7 @@ module.exports = function (grunt) {
     'clean:dist',
     'coffee',
     'createDefaultTemplate',
-    'jst',
+    'handlebars',
     'sass:dist',
     'useminPrepare',
     'imagemin',
