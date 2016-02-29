@@ -23,11 +23,23 @@ define [
       model.set 'cells', _.values(model.toJSON())
       rowIndex: index
 
+    childEvents:
+      'change': 'handleChange'
+
     initialize: ->
       console.log "Initializing Game View", @options
-      {gameId,game,@socket} = @options
-      if game is undefined
-        @socket.emit 'game:get', gameId, (game)->
-          @collection = new Backbone.Collection game
+      {@gameId,game,@socket} = @options
+      unless game?
+        @socket.emit 'game:get', @gameId, (game)=>
+          console.log "got game from server", game
+          if game is false
+            @trigger 'game:error'
+          else
+            @collection = new Backbone.Collection game
+            @render()
+      else
+        @collection = new Backbone.Collection game
 
-      @collection = new Backbone.Collection game
+    handleChange: (view,change)=>
+      console.log "Value changed", change
+      @socket.emit 'value:change', @gameId, change

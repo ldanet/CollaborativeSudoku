@@ -31,7 +31,9 @@ define [
       @$el.addClass @options.rowIndex
 
     handleValueChange: (view,value)=>
-      @trigger 'value:change',
+      change =
         cellIndex: view.options.cellIndex
         rowIndex: @options.rowIndex
         value: value
+      console.log "Cell changed", change
+      @triggerMethod 'change', change

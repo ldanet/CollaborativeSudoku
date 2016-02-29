@@ -19,3 +19,17 @@ module.exports = engine =
     games[id] = game
     gameId: id
     game: game
+
+  getGame: (gameId)->
+    game = games[gameId]
+    unless game?
+      return false
+    game
+
+  updateGame: (gameId, change)->
+    {rowIndex,cellIndex,value} = change
+    game = games[gameId]
+    unless game?
+      return false
+    game[rowIndex][cellIndex] = value
+    games[gameId] = game

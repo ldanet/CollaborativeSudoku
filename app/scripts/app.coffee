@@ -29,7 +29,7 @@ define [
       @view.on 'game:start', =>
         @socket.emit 'game:new', (gameId,game)=>
           console.log "Got new game!", gameId,game
-          Backbone.history.navigate gameId
+          @router.navigate gameId
           @showGameView(gameId, game)
 
       @mainRegion.show @view
@@ -39,6 +39,9 @@ define [
         gameId: gameId
         game: game
         socket: @socket
+
+      @view.on 'game:error': =>
+        @showHomeView()
 
       @mainRegion.show @view
 

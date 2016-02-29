@@ -10,3 +10,10 @@ module.exports = (http)->
     socket.on 'game:new', (callback)->
       {gameId,game} = engine.create()
       callback gameId, game
+
+    socket.on 'game:get',(gameId,callback)->
+      game = engine.getGame gameId
+      callback game
+
+    socket.on 'value:change', (gameId,value)->
+      engine.updateGame gameId,value
