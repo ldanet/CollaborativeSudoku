@@ -27,9 +27,6 @@ define [
           value: value
       @collection = new Backbone.Collection cells
 
-    onRender: ->
-      @$el.addClass @options.rowIndex
-
     handleValueChange: (view,value)=>
       change =
         cellIndex: view.options.cellIndex
@@ -37,3 +34,7 @@ define [
         value: value
       console.log "Cell changed", change
       @triggerMethod 'change', change
+
+    updateCell: (change)->
+      console.log "Updating cell"
+      @collection.at(change.cellIndex).set 'value', change.value

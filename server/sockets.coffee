@@ -17,3 +17,4 @@ module.exports = (http)->
 
     socket.on 'value:change', (gameId,value)->
       engine.updateGame gameId,value
+      socket.broadcast.emit 'value:change', gameId, value

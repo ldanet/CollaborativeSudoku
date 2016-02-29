@@ -17,9 +17,15 @@ define [
       'input @ui.input': 'handleInput'
 
     initialize: ->
+      @model.on 'change', =>
+        console.log "Value changed!", @options.cellIndex, @model.get('value')
+        @render()
+
+    serializeData: ->
       value = @model.get 'value'
       if value is 0
-        @model.set 'value', ''
+        value = ''
+      value: value
 
     handleInput: =>
       value = @ui.input.val()
@@ -31,3 +37,4 @@ define [
         displayValue = ''
       @ui.input.val displayValue
       @trigger 'value:change', value
+      

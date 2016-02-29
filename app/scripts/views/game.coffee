@@ -29,6 +29,7 @@ define [
     initialize: ->
       console.log "Initializing Game View", @options
       {@gameId,game,@socket} = @options
+      @socket.on 'value:change', @handleServerChange
       unless game?
         @socket.emit 'game:get', @gameId, (game)=>
           console.log "got game from server", game
@@ -43,3 +44,9 @@ define [
     handleChange: (view,change)=>
       console.log "Value changed", change
       @socket.emit 'value:change', @gameId, change
+
+    handleServerChange: (gameId, change)=>
+      console.log "Game change from server"
+      if gameId is @gameId
+        rowView = @children.findByIndex change.rowIndex
+        rowView.updateCell change
