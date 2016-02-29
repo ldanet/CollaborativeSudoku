@@ -2,14 +2,28 @@ $icon-font-path: "/bower_components/bootstrap-sass-official/assets/fonts/bootstr
 
 @import 'bootstrap-sass-official/assets/stylesheets/bootstrap.scss';
 
+.game.invalid{
+  input:{
+    border-color: red;
+  }
+}
+
+.invalid {
+  .sudoku, tr, td{ border-color: red; }
+}
 .sudoku {
-  $border: 3px solid black;
-  border-left: $border;
-  border-top: $border;
+  $border-width: 3px;
+  $border-style: solid;
+  border-top-width: $border-width;
+  border-top-style: $border-style;
+  border-left-width: $border-width;
+  border-left-style: $border-style;
   td:nth-of-type(3n){
-    border-right: $border;
+    border-right-width: $border-width;
+    border-right-style: $border-style;
   }
   tr:nth-of-type(3n){
-    border-bottom: $border;
+    border-bottom-width: $border-width;
+    border-bottom-style: $border-style;
   }
 }
